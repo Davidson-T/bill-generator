@@ -49,7 +49,7 @@ public class billGenerator extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         
-        initDatabase();  // Added database initialization
+        initDatabase(); 
         initComponents();
         loadProducts();
     }
@@ -67,7 +67,7 @@ public class billGenerator extends JFrame {
                 "price DECIMAL(10,2) NOT NULL)";
             stmt.execute(createTable);
             
-            // Insert sample data if table is empty
+            
             ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM products");
             rs.next();
             if (rs.getInt(1) == 0) {
@@ -80,19 +80,19 @@ public class billGenerator extends JFrame {
     }
 
     private void initComponents() {
-        // Product Panel
+        
         JPanel productPanel = new JPanel(new BorderLayout());
         productModel = new DefaultTableModel(new String[]{"ID", "Name", "Stock", "Price"}, 0);
         productTable = new JTable(productModel);
         productPanel.add(new JScrollPane(productTable), BorderLayout.CENTER);
         
-        // TOP BUTTON PANEL - NEW FEATURE
+        
         JPanel topBtnPanel = new JPanel();
         JButton addProductBtn = new JButton("➕ Add Product");
         topBtnPanel.add(addProductBtn);
         productPanel.add(topBtnPanel, BorderLayout.NORTH);
         
-        // Bottom button panel for cart
+        
         JPanel productBtnPanel = new JPanel();
         JButton addToCartBtn = new JButton("Add to Cart");
         JTextField qtyField = new JTextField(5);
@@ -103,7 +103,7 @@ public class billGenerator extends JFrame {
         productBtnPanel.add(addToCartBtn);
         productPanel.add(productBtnPanel, BorderLayout.SOUTH);
         
-        // Cart Panel
+        
         JPanel cartPanel = new JPanel(new BorderLayout());
         cartModel = new DefaultTableModel(new String[]{"Name", "Qty", "Price", "Total"}, 0);
         cartTable = new JTable(cartModel);
@@ -129,14 +129,14 @@ public class billGenerator extends JFrame {
         add(splitPane, BorderLayout.CENTER);
         add(new JScrollPane(billArea), BorderLayout.SOUTH);
         
-        // Action Listeners
+        
         addProductBtn.addActionListener(e -> showAddProductDialog());
         addToCartBtn.addActionListener(e -> addToCart(qtyField.getText()));
         clearCartBtn.addActionListener(e -> clearCart());
         generateBillBtn.addActionListener(e -> generateBill());
     }
     
-    // NEW FEATURE: Add Product Dialog
+    
     private void showAddProductDialog() {
         JTextField idField = new JTextField(10);
         JTextField nameField = new JTextField(20);
@@ -163,7 +163,7 @@ public class billGenerator extends JFrame {
                     return;
                 }
                 
-                // Insert into database
+                
                 try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS)) {
                     String sql = "INSERT INTO products (product_id, product_name, product_quantity, price) VALUES (?, ?, ?, ?)";
                     PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -175,7 +175,7 @@ public class billGenerator extends JFrame {
                     
                     if (rows > 0) {
                         JOptionPane.showMessageDialog(this, "Product added successfully!");
-                        loadProducts(); // Refresh table
+                        loadProducts(); 
                     }
                 }
                 
